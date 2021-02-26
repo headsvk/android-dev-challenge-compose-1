@@ -19,7 +19,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
@@ -44,9 +43,11 @@ fun MyApp() {
     val navController = rememberNavController()
     NavHost(navController, startDestination = "puppylist") {
         composable("puppylist") {
-            PuppyList(openDetails = { puppy ->
-                navController.navigate("puppydetails/${puppy.id}")
-            })
+            PuppyList(
+                openDetails = { puppy ->
+                    navController.navigate("puppydetails/${puppy.id}")
+                }
+            )
         }
         composable("puppydetails/{puppyId}") { backStackEntry ->
             PuppyDetails(
