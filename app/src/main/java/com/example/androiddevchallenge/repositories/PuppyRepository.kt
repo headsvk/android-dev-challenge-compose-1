@@ -24,6 +24,7 @@ import okhttp3.MediaType
 import retrofit2.Retrofit
 import retrofit2.create
 import java.util.Locale
+import kotlin.random.Random
 
 object PuppyRepository {
     private const val PUPPY_COUNT = 20
@@ -74,6 +75,8 @@ object PuppyRepository {
             coatLength = dog.coatLength(),
             size = dog.size(),
             image = image,
+            views = Random.Default.nextInt(100).toString(),
+            description = faker.vForVendetta.speeches(),
         )
     }
 

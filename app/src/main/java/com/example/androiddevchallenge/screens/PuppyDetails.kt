@@ -26,6 +26,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -34,10 +37,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.LocationCity
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -49,6 +56,7 @@ import com.example.androiddevchallenge.repositories.PuppyVo
 import com.example.androiddevchallenge.screens.data.FakePuppies
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import dev.chrisbanes.accompanist.coil.CoilImage
+import kotlinx.coroutines.launch
 
 @Composable
 fun PuppyDetails(
@@ -66,6 +74,9 @@ fun PuppyDetails(
 
 @Composable
 fun PuppyDetailsContent(puppy: PuppyVo, close: () -> Unit) {
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -80,6 +91,20 @@ fun PuppyDetailsContent(puppy: PuppyVo, close: () -> Unit) {
             )
         },
         backgroundColor = MaterialTheme.colors.surface,
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                text = { Text("Adopt") },
+                onClick = {
+                    scope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar("Adopting coming soon!")
+                    }
+                },
+                icon = { Icon(Icons.Filled.Favorite, "adopt action") },
+                elevation = FloatingActionButtonDefaults.elevation(8.dp),
+            )
+        },
+        floatingActionButtonPosition = FabPosition.Center,
+        scaffoldState = scaffoldState,
         content = {
             Column(
                 modifier = Modifier
@@ -105,12 +130,15 @@ fun PuppyDetailsContent(puppy: PuppyVo, close: () -> Unit) {
                         text = puppy.name,
                         style = MaterialTheme.typography.h4,
                     )
-                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = "\"${puppy.memePhrase}\"",
                         style = MaterialTheme.typography.h6,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = puppy.age,
+                        style = MaterialTheme.typography.body2,
+                    )
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -125,6 +153,31 @@ fun PuppyDetailsContent(puppy: PuppyVo, close: () -> Unit) {
                             style = MaterialTheme.typography.body2,
                         )
                     }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            Icons.Outlined.Visibility,
+                            contentDescription = "views",
+                            tint = MaterialTheme.colors.secondaryVariant,
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = puppy.views,
+                            style = MaterialTheme.typography.body2,
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Description",
+                        style = MaterialTheme.typography.caption,
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = puppy.description,
+                        style = MaterialTheme.typography.body2,
+                    )
+                    Spacer(modifier = Modifier.height(80.dp)) // fab spacer
                 }
             }
         }

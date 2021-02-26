@@ -26,4 +26,6 @@ data class PuppyVo(
     val coatLength: String,
     val size: String,
     val image: String,
+    val views: String,
+    val description: String,
 )

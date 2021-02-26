@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -39,6 +40,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationCity
+import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -74,13 +76,33 @@ fun PuppyListContent(puppies: List<PuppyVo>, openDetails: (puppy: PuppyVo) -> Un
             )
         },
         content = {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(puppies) { puppy ->
-                    PuppyListItem(puppy, openDetails)
+            if (puppies.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(80.dp)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Loading puppies",
+                            style = MaterialTheme.typography.body2,
+                        )
+                    }
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(puppies) { puppy ->
+                        PuppyListItem(puppy, openDetails)
+                    }
                 }
             }
         }
@@ -116,10 +138,26 @@ fun PuppyListItem(puppy: PuppyVo, openDetails: (puppy: PuppyVo) -> Unit) {
             Column(
                 modifier = Modifier.padding(start = 8.dp)
             ) {
-                Text(
-                    text = puppy.name,
-                    style = MaterialTheme.typography.h6,
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = puppy.name,
+                        style = MaterialTheme.typography.h6,
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = puppy.views,
+                        style = MaterialTheme.typography.body2,
+                    )
+                    Icon(
+                        Icons.Outlined.Visibility,
+                        contentDescription = "views",
+                        tint = MaterialTheme.colors.secondaryVariant,
+                        modifier = Modifier.padding(start = 4.dp),
+                    )
+                }
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = puppy.breed,
@@ -135,7 +173,7 @@ fun PuppyListItem(puppy: PuppyVo, openDetails: (puppy: PuppyVo) -> Unit) {
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
-                        Icons.Filled.LocationCity,
+                        Icons.Default.LocationCity,
                         contentDescription = "location icon",
                         tint = MaterialTheme.colors.secondaryVariant,
                     )

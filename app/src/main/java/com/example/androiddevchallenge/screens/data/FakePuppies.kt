@@ -29,5 +29,13 @@ object FakePuppies {
         coatLength = "5cm",
         size = "60cm",
         image = "https://images.dog.ceo/breeds/springer-english/n02102040_1230.jpg",
+        views = "100",
+        description = """
+            |Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nunc diam, 
+            |semper eu dolor ac, porta maximus ipsum. Nullam velit velit, cursus vel molestie nec, 
+            |suscipit et nulla. Morbi eleifend viverra aliquet. Mauris mattis justo eu dui vestibulum 
+            |faucibus. Aliquam ac tortor quis leo convallis tempor. Nulla aliquam erat vitae arcu 
+            |fermentum malesuada. Pellentesque ut libero eu sapien euismod finibus.
+            """.trimMargin()
     )
 }
